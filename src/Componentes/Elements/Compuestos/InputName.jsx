@@ -21,7 +21,7 @@ const InputName = ({
   label = fieldName[0].toUpperCase() + fieldName.substr(1),
   minLength = null,
   canAutoComplete = false,
-  maxLength = 20,
+  maxLength = 100,
   required = false,
   vars = null,
   onEnter = () => { }
