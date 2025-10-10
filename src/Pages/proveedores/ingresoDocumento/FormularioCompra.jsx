@@ -164,38 +164,21 @@ const FormularioCompra = ({
 
   const handleCostoChange = (value, index) => {
     const updatedProducts = [...selectedProducts];
-    // console.log("updatedProduct")
-    // console.log(updatedProducts[index])
-    // // Parse the input value to an integer
-    const parsedValue = parseInt(value);
-
-    // Check if the parsed value is NaN or less than zero
-    if (isNaN(parsedValue) || parsedValue < 0) {
-
-      showMessage("valor incorrecto")
-      // If it's NaN or less than zero, set quantity and total to zero
-      // updatedProducts[index].cantidad = 0;
-      // updatedProducts[index].precioCosto = 0;
-      // updatedProducts[index].precio = 0;
-      // updatedProducts[index].total = 0;
-      return
-    } else {
-      // Otherwise, update quantity and calculate total
-
-      updatedProducts[index].precioCosto = parsedValue;
-      const prod = updatedProducts[index]
-      updatedProducts[index] = Product.logicaPrecios(prod, "final")
-      // updatedProducts[index].precio = parsedValue;
-      updatedProducts[index].total = calcularTotal(
-        parsedValue,
-        updatedProducts[index].cantidad,
-        updatedProducts[index].cantidadProveedor
-      )
-    }
+    const isOk = Validator.isDecimal(value);
+    if (!isOk) return
+    const parsedValue = (value);
+    updatedProducts[index].precioCosto = parsedValue;
+    const prod = updatedProducts[index]
+    updatedProducts[index] = Product.logicaPrecios(prod, "final")
+    // updatedProducts[index].precio = parsedValue;
+    updatedProducts[index].total = calcularTotal(
+      parsedValue,
+      updatedProducts[index].cantidad,
+      updatedProducts[index].cantidadProveedor
+    )
 
     setSelectedProducts(updatedProducts);
-  };
-
+  }
 
   const calcularTotal = (costo, cantidad, cantidadProveedor) => {
     // console.log("calcularTotal..costo", costo, "..cantidad:", cantidad,"..cantidad proveedor:",cantidadProveedor)
@@ -768,10 +751,11 @@ const FormularioCompra = ({
                             <TextField
                               label={revisarLabelCriterioCosto(product)}
                               // value={revisarInputCriterioCosto(product.precioCosto)}
-                              value={(product.precioCosto).toFixed(2)}
-                              onChange={(e) =>
+                              // value={(product.precioCosto).toFixed(2)}
+                              value={(product.precioCosto)}
+                              onChange={(e) => {
                                 handleCostoChange(e.target.value, index)
-                              }
+                              }}
                             />
                           </TableCell>
                           <TableCell>
@@ -837,7 +821,7 @@ const FormularioCompra = ({
                 <Button
                   variant="contained"
                   color="secondary"
-                  disabled={ !selectedProveedor}
+                  disabled={!selectedProveedor}
                   onClick={() => {
                     if (associating && !countPackage) {
                       showMessage("Ingresar la cantidad por paquete antes de crear un producto")
