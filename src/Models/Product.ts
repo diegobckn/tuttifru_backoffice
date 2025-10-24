@@ -404,6 +404,44 @@ class Product extends Model {
         }
     }
 
+    async updatePrecios(data: any, callbackOk: any, callbackWrong: any) {
+        try {
+            const configs = ModelConfig.get()
+            var url = configs.urlBase +
+                "/ProductosTmp/UpdateProductoPrecio"
+            data.codigoSucursal = 0;
+            data.puntoVenta = ""
+            data.codbarra = data.idProducto
+            data.fechaIngreso = System.getInstance().getDateForServer()
+
+            const response = await axios.put(url, data);
+            if (
+                response.data.statusCode == 200
+                || response.data.statusCode == 201
+
+            ) {
+                callbackOk(response.data, response);
+            } else {
+                callbackWrong("respuesta incorrecta del servidor")
+            }
+        } catch (error: any) {
+            console.log(error)
+            if (error.response && error.response.data && error.response.data.descripcion) {
+                callbackWrong(error.response.data.descripcion);
+            } else if (error.response && error.response.status === 500) {
+                callbackWrong(
+                    "Error interno del servidor. Por favor, inténtalo de nuevo más tarde."
+                );
+            } else if (error.message != "") {
+                callbackWrong(error.message)
+            } else {
+                callbackWrong(
+                    "Error al conectar con el servidor. Por favor, inténtalo de nuevo más tarde."
+                );
+            }
+        }
+    }
+
 
     async getCategories(callbackOk, callbackWrong) {
         try {
