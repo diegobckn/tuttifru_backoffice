@@ -178,6 +178,7 @@ const PreciosGeneralesProducItem = ({
         subFamilia: product.idSubFamilia,
         margen: product.gananciaPorcentaje
       };
+      editedProduct.precioCosto = parseFloat(editedProduct.precioCosto)
       console.log("para enviar",editedProduct)
       Product.getInstance().update(editedProduct,(data,response)=>{
         onUpdatedOk(editedProduct,response)
