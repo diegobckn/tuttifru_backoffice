@@ -25,6 +25,7 @@ const BaseConfig =  {
     dashboardRefreshPreventasUsadas:30,
     dashboardRefreshPreventasDescartadas:30,
     
+    idEmpresa:0,
 };
 
 export default BaseConfig;

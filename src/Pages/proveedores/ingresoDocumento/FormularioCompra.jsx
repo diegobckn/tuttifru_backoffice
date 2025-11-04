@@ -169,13 +169,21 @@ const FormularioCompra = ({
     const parsedValue = (value);
     updatedProducts[index].precioCosto = parsedValue;
     const prod = updatedProducts[index]
-    updatedProducts[index] = Product.logicaPrecios(prod, "final")
+
+    if (updatedProducts[index].sinPrecioCosto) {
+      const prodm = Product.calcularMargen(updatedProducts[index])
+      updatedProducts[index] = prodm
+    } else {
+      updatedProducts[index] = Product.logicaPrecios(prod, "final")
+    }
     // updatedProducts[index].precio = parsedValue;
     updatedProducts[index].total = calcularTotal(
       parsedValue,
       updatedProducts[index].cantidad,
       updatedProducts[index].cantidadProveedor
     )
+
+    console.log("updatedProducts", updatedProducts)
 
     setSelectedProducts(updatedProducts);
   }
@@ -248,6 +256,12 @@ const FormularioCompra = ({
       product.total = calcularTotal(product.precioCosto, product.cantidad, product.cantidadProveedor)
       product.impuestosValor = Product.calcularImpuestos(product)
 
+      if (product.precioCosto == 0) {
+        product.sinPrecioCosto = true
+      } else {
+        product.sinPrecioCosto = false
+      }
+
       console.log("agregado queda asi:", System.clone(product))
       // setSelectedProducts([...selectedProducts, newProduct]);
       // console.log("seleccionados:",[...selectedProducts, product]);
@@ -274,7 +288,15 @@ const FormularioCompra = ({
         proveedor.razonSocial.toLowerCase().includes(searchText.toLowerCase()) ||
         proveedor.rut.toLowerCase().includes(searchText.toLowerCase())
       );
-      setProveedoresFiltrados(filteredResults);
+
+      if (filteredResults.length == 1) {
+        setSelectedProveedor(filteredResults[0]);
+        setProveedoresFiltrados([]);
+        setSearchText("");
+        setShowPanel(false)
+      }else{
+        setProveedoresFiltrados(filteredResults);
+      }
     }
   };
 
@@ -894,6 +916,7 @@ const FormularioCompra = ({
         onChange={(changed) => {
           console.log("el changed es", changed)
           changed.total = calcularTotal(changed.precioCosto, changed.cantidad, changed.cantidadProveedor)
+          changed.sinPrecioCosto = false
           System.addAllInArr(setSelectedProducts, selectedProducts, changed.index, changed)
         }}
       />

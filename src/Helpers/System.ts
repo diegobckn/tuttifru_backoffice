@@ -334,6 +334,13 @@ class System {
         return resu
     }
 
+    static ucfirst(txt) {
+        if (!txt) {
+            return '';
+        }
+        return txt.charAt(0).toUpperCase() + txt.slice(1);
+    }
+
 }
 
 
