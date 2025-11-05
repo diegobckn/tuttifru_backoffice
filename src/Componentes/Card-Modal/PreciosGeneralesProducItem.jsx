@@ -184,7 +184,7 @@ const PreciosGeneralesProducItem = ({
       subCategoria: product.idsubCategoria,
       familia: product.idFamilia,
       subFamilia: product.idSubFamilia,
-      margen: product.gananciaPorcentaje
+      margen: parseFloat(product.gananciaPorcentaje + "")
     };
     console.log("para enviar", editedProduct)
     editedProduct.precioCosto = parseFloat(editedProduct.precioCosto)
