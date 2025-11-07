@@ -20,7 +20,7 @@ class ModelConfig {
     }
 
     static get(propName = "") {
-        console.log("propName", propName)
+        // console.log("propName", propName)
         var rs: any = ModelConfig.getInstance().sesion.cargar(1)
         if (!rs) {
             this.getInstance().sesion.guardar(BaseConfig);

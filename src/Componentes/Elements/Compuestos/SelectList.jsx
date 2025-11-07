@@ -24,7 +24,8 @@ const SelectList = ({
   label = fieldName[0].toUpperCase() + fieldName.substr(1),
   required = false,
   styles = {},
-  vars = null
+  vars = null,
+  placeholder = "Seleccionar"
 }) => {
 
   const {
@@ -77,6 +78,13 @@ const SelectList = ({
     // console.log("selected es:", selected)
   }, [selected])
 
+  //capturamos algun cambio de afuera
+  useEffect(() => {
+    setSelected(inputState[0])
+  }, [inputState[0]])
+
+
+
   return (
     <>
       {withLabel && (
@@ -86,16 +94,17 @@ const SelectList = ({
       )}
 
 
-      <Select
+      <TextField
+        select
         sx={{
           ...{
-            marginTop: "17px"
+            marginTop: (withLabel ? "17px" : "")
           },
           ...styles
         }}
         fullWidth
         autoFocus={autoFocus}
-        required={required}
+        // required={required}
         label={label}
         value={selected !== "" ? selected : -1}
         onChange={checkChange}
@@ -104,7 +113,7 @@ const SelectList = ({
           key={-1}
           value={-1}
         >
-          SELECCIONAR
+          {placeholder}
         </MenuItem>
 
         {selectList.map((selectOption, ix) => (
@@ -115,7 +124,7 @@ const SelectList = ({
             {selectOption}
           </MenuItem>
         ))}
-      </Select>
+      </TextField>
     </>
   );
 };
