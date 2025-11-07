@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
 import {
   Box,
@@ -35,6 +35,7 @@ const PreciosGeneralesProducItem = ({
   onChange = null,
   onUpdatedOk,
   onUpdatedWrong,
+  darFocoCosto = false
 }) => {
 
   const {
@@ -49,6 +50,8 @@ const PreciosGeneralesProducItem = ({
   const [fijarCosto, setFijarCosto] = useState(false);
   const [fijarVenta, setFijarVenta] = useState(false);
   const [product, setProduct] = useState(null);
+
+  const refInputCosto = useRef(null)
 
   useEffect(() => {
     // console.log("cambio producto",product)
@@ -118,6 +121,15 @@ const PreciosGeneralesProducItem = ({
     setCargaUnica(true)
   }, [producto])
 
+  useEffect(() => {
+    if (darFocoCosto) {
+      setTimeout(() => {
+        console.log("primera carga")
+        System.intentarFoco(refInputCosto)
+      }, 500);
+    }
+  }, [])
+
   const init = () => {
     console.log("inicia con:", System.clone(producto))
     const resul = Product.iniciarLogicaPrecios(System.clone(producto))
@@ -133,22 +145,25 @@ const PreciosGeneralesProducItem = ({
     // console.log("index", index)
     if (newValue == '') newValue = "0"
     if ((newValue + "").indexOf(".") > -1) {
-      const nmArr = (newValue + "").split(".")
-      if (nmArr[1].length > 0) {
-        newValue = parseFloat(newValue).toFixed(2)
-        newValue = parseFloat(newValue)
-      } else {
-        // newValue += "0"
-        // newValue = parseFloat(newValue)
-      }
+      // const nmArr = (newValue + "").split(".")
+      // if (nmArr[1].length > 0) {
+      //   console.log("caso 1..tiene decimal/es")
+      //   // newValue = parseFloat(newValue).toFixed(2)
+      //   newValue = parseFloat(newValue)
+      //   console.log("va asi", newValue)
+      // } else {
+      //   console.log("caso 2 no tiene decimales..queda igual")
+      //   // newValue += "0"
+      //   // newValue = parseFloat(newValue)
+      // }
     }
     // newValue = parseFloat(newValue)
 
     if (Validator.isPeso(newValue)) {
-      console.log("es valido")
+      console.log("es valido..", newValue)
       System.addInObj(setProduct, propName, newValue)
     } else {
-      // console.log("no es valido")
+      console.log("no es valido", newValue)
     }
     console.log("con el cambio queda asi:", product)
     setUltimoFoco(propName)
@@ -210,6 +225,7 @@ const PreciosGeneralesProducItem = ({
           value={product.precioCosto}
           onChange={(e) => changePriceValue("precioCosto", e.target.value)}
           onClick={() => setUltimoFoco("precioCosto")}
+          ref={refInputCosto}
           InputProps={{
             pattern: "[0-9]*", // Asegura que solo se puedan ingresar números
             startAdornment: (

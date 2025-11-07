@@ -149,6 +149,8 @@ const AjustePrecios = ({
               console.error("Error al actualizar el producto:", error);
               showMessage(error);
             }}
+
+            darFocoCosto={true}
           />
 
           <Box sx={{
