@@ -390,7 +390,7 @@ const FormularioCompra = ({
 
 
   const cerrarPantalla = () => {
-    showConfirm("Realmente quiere salir?", () => {
+    // showConfirm("Realmente quiere salir?", () => {
       setOpenDialog(false)
 
       setProductoSel(null)
@@ -402,7 +402,7 @@ const FormularioCompra = ({
       setTipoDocumento("")
       setFolioDocumento("")
 
-    }, () => { })
+    // }, () => { })
   }
 
   const checkFolio = () => {
@@ -676,7 +676,7 @@ const FormularioCompra = ({
                       width: "100%",
                       height: "55px"
                     }}>
-                      Buscar
+                      Buscar provedor
                     </Button>
 
                   </Grid>
