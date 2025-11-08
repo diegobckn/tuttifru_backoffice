@@ -128,8 +128,11 @@ const SeleccionaBorradorDocProv = ({
                       <TableCell sx={{ width: "33%" }}>
                         {borrador.nroFolio}
                       </TableCell>
+
                       <TableCell sx={{ width: "33%" }}>
-                        {`${borrador.proveedor.razonSocial} ${borrador.proveedor.rut}`}
+                        {borrador.proveedor && (
+                          (`${borrador.proveedor.razonSocial} ${borrador.proveedor.rut}`)
+                        )}
                       </TableCell>
                       <TableCell sx={{ width: "33%" }}>
                         {System.formatDateServer(borrador.fechaIngreso, false)}

@@ -29,6 +29,7 @@ class ProveedorDocumento extends ModelSingleton {
   }
 
   static crearBorrador(nroFolio: string, tipoDoc: string, fechaIngreso: string, proveedor: any, productos: any = []) {
+    if(!proveedor) return
     var bors = this.getBorradores()
     const nwBorrador = {
       nroFolio,

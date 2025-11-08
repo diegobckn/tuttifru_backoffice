@@ -299,7 +299,7 @@ const FormularioCompra = ({
     if (folioDocumento) {
       ProveedorDocumento.crearBorrador(folioDocumento, tipoDocumento, fecha, selectedProveedor, selectedProducts)
     }
-  }, [selectedProducts, folioDocumento, fecha, tipoDocumento]);
+  }, [selectedProducts, fecha, tipoDocumento]);
 
   const buscarProveedor = () => {
     console.log("buscarProveedor")
