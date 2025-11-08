@@ -29,8 +29,8 @@ class ProveedorDocumento extends ModelSingleton {
   }
 
   static crearBorrador(nroFolio: string, tipoDoc: string, fechaIngreso: string, proveedor: any, productos: any = []) {
-    if(!proveedor) return
     var bors = this.getBorradores()
+    const antes = bors.length
     const nwBorrador = {
       nroFolio,
       tipoDoc,
@@ -40,6 +40,7 @@ class ProveedorDocumento extends ModelSingleton {
     }
 
     if (bors.length > 0) {
+
       var existeKey = -1
       bors.forEach((bor: any, ix: number) => {
         if (bor.nroFolio == nroFolio) {
@@ -56,6 +57,9 @@ class ProveedorDocumento extends ModelSingleton {
     }
 
     ProveedorDocumento.getInstance().sesionBorradores.guardar(bors)
+    var bors = this.getBorradores()
+    const despues = bors.length
+    return antes != despues
   }
 
   static eliminarBorrador(nroFolio: string) {

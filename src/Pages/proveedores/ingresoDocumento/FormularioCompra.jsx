@@ -297,7 +297,10 @@ const FormularioCompra = ({
 
     console.log("cambio algo de productos seleccionados", selectedProducts)
     if (folioDocumento) {
-      ProveedorDocumento.crearBorrador(folioDocumento, tipoDocumento, fecha, selectedProveedor, selectedProducts)
+      const cmb = ProveedorDocumento.crearBorrador(folioDocumento, tipoDocumento, fecha, selectedProveedor, selectedProducts)
+      if (cmb) {
+        showMessage("borrador creado")
+      }
     }
   }, [selectedProducts, fecha, tipoDocumento]);
 
@@ -406,6 +409,14 @@ const FormularioCompra = ({
     ProveedorDocumento.checkExistFolio(folioDocumento, () => {
       showAlert("Ya existe el folio")
     })
+
+
+    if (folioDocumento) {
+      const cmb = ProveedorDocumento.crearBorrador(folioDocumento, tipoDocumento, fecha, selectedProveedor, selectedProducts)
+      if (cmb) {
+        showMessage("borrador creado")
+      }
+    }
   }
 
   const revisarLabelCriterioCosto = (producto) => {
@@ -607,9 +618,9 @@ const FormularioCompra = ({
                       <Button onClick={() => {
                         setShowBorradores(true)
                       }} variant="contained" sx={{
-                        backgroundColor:"#3d00af",
+                        backgroundColor: "#3d00af",
                         width: "100%",
-                        color:"rgba(233, 233, 233, 1)",
+                        color: "rgba(233, 233, 233, 1)",
                         height: "55px"
                       }}
                       >

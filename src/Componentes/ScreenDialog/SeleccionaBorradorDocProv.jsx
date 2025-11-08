@@ -33,6 +33,7 @@ import ProveedorDocumento from "../../Models/ProveedorDocumento";
 import TiposDocumentoProveedor from "../../definitions/TiposDocumentoProveedor";
 import SmallDangerButton from "../Elements/SmallDangerButton";
 import { SelectedOptionsContext } from "../Context/SelectedOptionsProvider";
+import SmallSecondaryButton from "../Elements/SmallSecondaryButton";
 
 
 const SeleccionaBorradorDocProv = ({
@@ -69,6 +70,61 @@ const SeleccionaBorradorDocProv = ({
 
     return txt
   }
+
+  const eliminarRepetidos = () => {
+    const bors = ProveedorDocumento.getBorradores()
+    console.log("bors:", bors)
+
+    if (bors.length > 0) {
+      // limpiamos repetidos
+      var esRepetido = true;
+      var eliminar = "";
+      var idEliminar = {}
+      // while (esRepetido) {
+      esRepetido = false;
+      bors.forEach((bor1, ix1) => {
+        var yaEsta = false
+        bors.forEach((bor2, ix2) => {
+          if (ix1 != ix2) {
+            if (!yaEsta && bor2.nroFolio.indexOf(bor1.nroFolio) === 0) {//esta
+              console.log("este folio ", bor1.nroFolio, "esta en este ", bor2.nroFolio)
+              yaEsta = true
+              if (eliminar != "") eliminar += ", "
+              eliminar += ix1
+              idEliminar[ix1] = true
+              // eliminar += bor1.nroFolio
+            }
+          }
+        })
+      })
+      // }
+
+      console.log("eliminar:", eliminar)
+      console.log("idEliminar:", idEliminar)
+
+      var borLimpio = []
+      const ids = Object.keys(idEliminar)
+      bors.forEach((bor, ix) => {
+        console.log("ix:", ix)
+        if (ids.indexOf(ix + "") == -1) {
+          console.log(ix, " no esta en ", ids)
+          borLimpio.push(bor)
+        }
+      })
+
+
+      console.log("queda asi", borLimpio)
+      ProveedorDocumento.getInstance().sesionBorradores.guardar(borLimpio)
+      setBorradores(ProveedorDocumento.getBorradores())
+    }
+  }
+
+  const eliminarTodos = () => {
+    ProveedorDocumento.getInstance().sesionBorradores.guardar([])
+    setBorradores(ProveedorDocumento.getBorradores())
+  }
+
+
 
   useEffect(() => {
     if (openDialog) {
@@ -159,6 +215,12 @@ const SeleccionaBorradorDocProv = ({
 
       </DialogContent>
       <DialogActions>
+        {borradores.length > 0 && (
+          <>
+            <SmallSecondaryButton textButton={"Eliminar repetidos"} actionButton={eliminarRepetidos} />
+            <SmallDangerButton textButton={"Eliminar Todos"} actionButton={eliminarTodos} />
+          </>
+        )}
         <Button onClick={() => {
           setOpenDialog(false)
         }}>Volver</Button>
