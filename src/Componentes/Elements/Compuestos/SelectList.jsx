@@ -37,7 +37,7 @@ const SelectList = ({
   const [validation, setValidation] = validationState ? validationState : vars ? vars[1][fieldName] : useState(null)
 
   const validate = () => {
-    // console.log("validate de:" + fieldName)
+    console.log("validate de:" + fieldName)
     // const len = selected.length
     // console.log("len:", len)
     // const reqOk = (!required || (required && len > 0))
@@ -56,7 +56,7 @@ const SelectList = ({
       "allOk": (reqOk),
       "message": message
     }
-    // console.log("vale:", vl)
+    console.log("vale:", vl)
     setValidation(vl)
   }
 
@@ -69,19 +69,27 @@ const SelectList = ({
   }
 
   useEffect(() => {
+    console.log("inputState es:", inputState)
+    if (!inputState) {
+      inputState = []
+      inputState.push(vars[0][fieldName])
+      inputState.push(vars[1][fieldName])
+    }
+    console.log("carga inicial para ", fieldName)
     validate()
     setSelected(-1)
   }, [])
 
   useEffect(() => {
     validate()
-    // console.log("selected es:", selected)
+    console.log("selected es:", selected)
   }, [selected])
 
   //capturamos algun cambio de afuera
   useEffect(() => {
+    console.log("cambio inputState[0]", inputState[0])
     setSelected(inputState[0])
-  }, [inputState[0]])
+  }, [inputState])
 
 
 
